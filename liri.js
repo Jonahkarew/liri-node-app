@@ -5,34 +5,55 @@ var Moment = require('moment');
 require("dotenv").config();
 var keys = require("./keys.js");
 var spotify = new Spotify(keys.spotify);
+var fs = require("fs")
 
 //user inputs
 const command = process.argv[2];
 const input = process.argv[3];
 
+//provide instructions for user
+
+
+
 
 //add switch commands
 switch (command){
-  case "concert_this":
+  case "help":
+  instructions();
+  case "concert-this":
   concert_this();
   break;
-  case "spotify_this":
+  case "spotify-this":
   spotify_this();
   break;
-  case "movie_this":
+  case "movie-this":
   movie_this();
   break;
-  case "do_what_it_says":
+  case "do-what-it-says":
   do_what_it_says();
+  break;
+  default:
+  return "try concert-this, spotify-this, movie-this, or do-what-it-says"
 }
 
+function instructions(){
+  console.log("enter the name of the file, then concert-this, spotify-this, movie-this, or do-what-it-says, followed by your search term.")
+}
 
 //function for searching bandsInTown
 function concert_this(){
-  console.log("concert_this works")
+  // console.log("concert_this works")
   Axios.get(`https://rest.bandsintown.com/artists/${input}/events?app_id=codingbootcamp`)
   .then(function(response){
-    console.log(response.name)
+    
+    // console.log(response.data[1]);
+    console.log("__________________________")
+    console.log(`Venue name: ${response.data[1].venue.name}`);
+    console.log(`Venue city: ${response.data[1].venue.city}`);
+    console.log(`Venue Region: ${response.data[1].venue.region}`);
+    // console.log(`Show description: ${response.data[1].description}`);
+    console.log(`Show date: ${Moment(response.data[1].datetime).format("MM-DD-YYYY")}`);
+    console.log("__________________________")
   });
 }
 
@@ -44,13 +65,21 @@ function spotify_this(){
   // console.log(spotify)
 
   //spotify search track
-  spotify.search({ type: 'track', query: `${input}` }, function(err, data) {
+  spotify.search({ 
+    type: 'track', 
+    query: `${input}` }, 
+    function(err, data) {
     
     if (err) {
       return console.log('Error occurred: ' + err);
     }
-   
-  console.log(data.items); 
+    // console.log(data.tracks.items[0]); 
+    console.log("__________________________")
+  console.log(`Artist Name: ${data.tracks.items[0].artists[0].name}`);
+  console.log(`Track Name: ${data.tracks.items[0].name}`);
+  console.log(`Preview URL: ${data.tracks.items[0].preview_url}`);
+  console.log(`Album Title: ${data.tracks.items[0].album.name}`)
+  console.log("__________________________")
   });
 }
 
@@ -61,6 +90,9 @@ function movie_this(){
   Axios.get(`http://www.omdbapi.com/?t=${input}&y=&plot=short&apikey=trilogy`)
   .then(function(response){
     // console.log(response.data);
+
+    //console.log required data
+    console.log("__________________________")
     console.log(`Title: ${response.data.Title}`);
     console.log(`Year ${response.data.Year}`);
     console.log(`IMDB Rating: ${response.data.Ratings[0].Value}`);
@@ -69,6 +101,7 @@ function movie_this(){
     console.log(`Language: ${response.data.Language}`);
     console.log(`Plot: ${response.data.Plot}`);
     console.log(`Actors: ${response.data.Actors}`)
+    console.log("__________________________")
   })
 }
 
