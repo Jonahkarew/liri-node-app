@@ -107,5 +107,32 @@ function movie_this(){
 
 //function for do what it says
 function do_what_it_says(){
-  console.log("do_what_it_says works")
+  // console.log("do_what_it_says works");
+
+  //have fs read the file
+  fs.readFile("random.txt", "utf8", function(err, data){
+    //throw error first if there is one
+    if(err){
+      return console.log(err)
+    }
+    else{
+      //check that it read
+      // console.log(data)
+      //add it to an array like in unit-10-12
+      var dataArr = data.split(",")
+      //check the array
+      console.log(dataArr)
+      //set variables to command and input and bring back functions from earlier
+      var command = dataArr[0];
+      let input = dataArr[1];
+
+      //bringing back the func
+      switch(command){
+        case "spotify-this":
+        spotify_this(input);
+        // console.log('something works')
+        break;
+      }
+    }
+  })
 }
