@@ -59,3 +59,9 @@ typings/
 
 # next.js build output
 .next
+
+
+#what the hw instructions said to put here
+node_modules
+.DS_Store
+.env
