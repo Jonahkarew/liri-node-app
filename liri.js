@@ -8,10 +8,8 @@ var spotify = new Spotify(keys.spotify);
 var fs = require("fs")
 
 //user inputs
-const command = process.argv[2];
-const input = process.argv[3];
-
-//provide instructions for user
+let command = process.argv[2];
+let input = process.argv[3];
 
 
 
@@ -52,6 +50,7 @@ function concert_this(){
     console.log(`Venue city: ${response.data[1].venue.city}`);
     console.log(`Venue Region: ${response.data[1].venue.region}`);
     // console.log(`Show description: ${response.data[1].description}`);
+    //use moment.js to format the date
     console.log(`Show date: ${Moment(response.data[1].datetime).format("MM-DD-YYYY")}`);
     console.log("__________________________")
   });
@@ -74,7 +73,7 @@ function spotify_this(){
       return console.log('Error occurred: ' + err);
     }
     // console.log(data.tracks.items[0]); 
-    console.log("__________________________")
+  console.log("__________________________")
   console.log(`Artist Name: ${data.tracks.items[0].artists[0].name}`);
   console.log(`Track Name: ${data.tracks.items[0].name}`);
   console.log(`Preview URL: ${data.tracks.items[0].preview_url}`);
@@ -86,6 +85,8 @@ function spotify_this(){
 //function for searching omdb
 
 function movie_this(){
+  
+
   // console.log("movie_this works")
   Axios.get(`http://www.omdbapi.com/?t=${input}&y=&plot=short&apikey=trilogy`)
   .then(function(response){
@@ -103,6 +104,10 @@ function movie_this(){
     console.log(`Actors: ${response.data.Actors}`)
     console.log("__________________________")
   })
+  //set blank input to mr. nobody
+  // if(input = ""){
+  //   input === "mr nobody"
+  // }
 }
 
 //function for do what it says
@@ -119,18 +124,25 @@ function do_what_it_says(){
       //check that it read
       // console.log(data)
       //add it to an array like in unit-10-12
-      var dataArr = data.split(",")
+      var dataArr = data.split(", ")
       //check the array
       console.log(dataArr)
       //set variables to command and input and bring back functions from earlier
-      var command = dataArr[0];
+      let command = dataArr[0];
       let input = dataArr[1];
-
+      console.log(input)
+      spotify_this(input)
       //bringing back the func
       switch(command){
         case "spotify-this":
-        spotify_this(input);
+        spotify_this();
         // console.log('something works')
+        break;
+        case "movie-this":
+        movie_this(input);
+        break;
+        case "concert-this":
+        concert_this(input);
         break;
       }
     }
