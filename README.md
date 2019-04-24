@@ -20,6 +20,8 @@ also uses axios, moment.js, and fs
 
 ![omdb](./images/omdb.png)
 
+if these images don't work for whatever reason, they are contained in the image folder included.
+
 ##how to use
 
 to search songs: node liri.js spotify-this "song title"
